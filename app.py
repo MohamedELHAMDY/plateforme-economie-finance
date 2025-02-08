@@ -6,9 +6,8 @@ import plotly.express as px
 
 st.title("Plateforme Interactive d’Apprentissage de l’Économie et de la Finance")
 
-@st.cache
+@st.cache_data
 def load_data():
-    # Exemple : fichier debt_data.csv avec colonnes 'année' et 'dette_publique'
     df = pd.read_csv("data/debt_data.csv")
     return df
 
