@@ -14,7 +14,7 @@ def load_data():
         st.error(f"Le fichier {filepath} n'existe pas. Veuillez vérifier que le fichier est bien présent.")
         return pd.DataFrame()  # Retourne un DataFrame vide
     try:
-        # Si nécessaire, spécifiez l'encodage ou le séparateur
+        # Lire le CSV. Si besoin, ajustez encoding ou séparateur (sep)
         df = pd.read_csv(filepath, encoding="utf-8")
         if df.empty:
             st.error(f"Le fichier {filepath} est vide. Veuillez le remplir avec des données valides.")
@@ -28,16 +28,33 @@ data = load_data()
 if not data.empty:
     st.subheader("Données brutes : Dette Publique")
     st.dataframe(data.head())
-
-    # Afficher les colonnes du DataFrame pour diagnostic
+    
+    # Afficher les colonnes pour diagnostic
     st.write("Colonnes du DataFrame :", data.columns.tolist())
-
-    # Vérifiez que les colonnes existent bien avant de créer le graphique
+    
+    # Si la colonne 'année' n'existe pas, essayons de la créer automatiquement
+    if "année" not in data.columns:
+        # Exemple : si le nombre de lignes est 6, on suppose les années de 2015 à 2020
+        if len(data) == 6:
+            data["année"] = [2015, 2016, 2017, 2018, 2019, 2020]
+        else:
+            st.error("La colonne 'année' est manquante et ne peut pas être générée automatiquement.")
+    
+    # Renommer la colonne de valeur en 'dette_publique'
+    if "Encours de la dette extérieure publique (En millions DH)" in data.columns:
+        data = data.rename(columns={"Encours de la dette extérieure publique (En millions DH)": "dette_publique"})
+    else:
+        st.error("La colonne 'Encours de la dette extérieure publique (En millions DH)' est introuvable.")
+    
+    # Vérifier que les colonnes attendues sont présentes après modification
+    st.write("Colonnes modifiées du DataFrame :", data.columns.tolist())
+    
     if "année" in data.columns and "dette_publique" in data.columns:
+        # Visualisation de l'évolution de la dette publique
         fig = px.line(data, x='année', y='dette_publique', title="Évolution de la Dette Publique")
         st.plotly_chart(fig)
     else:
-        st.error("Les colonnes 'année' et/ou 'dette_publique' sont introuvables dans les données.")
+        st.error("Les colonnes 'année' et/ou 'dette_publique' sont toujours introuvables après modification.")
     
     # Simulateur de scénarios
     st.subheader("Simulateur de Scénarios")
@@ -46,15 +63,14 @@ if not data.empty:
     taux_croissance = st.slider("Taux de croissance (%)", min_value=-5.0, max_value=10.0, value=2.0, step=0.1)
     annee_simulation = st.number_input("Année de simulation", min_value=2025, max_value=2050, value=2030)
 
-    # Assurez-vous qu'il y a au moins une ligne de données
-    if len(data) > 0:
+    try:
         derniere_valeur = data['dette_publique'].iloc[-1]
         annee_courante = data['année'].iloc[-1]
         annees_diff = annee_simulation - annee_courante
         simulation = derniere_valeur * ((1 + taux_croissance/100) ** annees_diff)
         st.write(f"Valeur projetée de la dette publique en {annee_simulation} : {simulation:,.2f}")
-    else:
-        st.error("Pas de données suffisantes pour effectuer la simulation.")
+    except Exception as e:
+        st.error(f"Erreur dans la simulation : {e}")
 
     # Section pédagogique
     st.subheader("Apprendre les Concepts")
