@@ -5,7 +5,7 @@ import plotly.express as px
 import os
 
 st.title("Finances Publiques et Budgets")
-st.markdown("Analyse des dépenses, recettes et budgets publics.")
+st.markdown("Analyse des budgets et dépenses publiques du Maroc.")
 
 @st.cache_data
 def load_finances_data():
@@ -20,12 +20,12 @@ def load_finances_data():
 finances_data = load_finances_data()
 if not finances_data.empty:
     st.dataframe(finances_data.head())
-    # Exemple : graphique du budget de fonctionnement
+    # Graphique du budget de fonctionnement
     if "année" in finances_data.columns and "budget_fonctionnement" in finances_data.columns:
-        fig = px.line(finances_data, x="année", y="budget_fonctionnement", title="Budget de Fonctionnement")
+        fig = px.line(finances_data, x="année", y="budget_fonctionnement", 
+                      title="Budget de Fonctionnement")
         st.plotly_chart(fig)
     else:
         st.error("Les colonnes nécessaires ne sont pas présentes dans les données.")
 else:
     st.info("Aucune donnée financière disponible pour le moment.")
- 
