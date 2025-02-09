@@ -6,9 +6,8 @@ import plotly.express as px
 import os
 
 st.title("Simulation Avancée de Scénarios Économiques")
-st.markdown("Modifiez les paramètres pour comparer différents scénarios économiques.")
+st.markdown("Modifiez les paramètres pour comparer différents scénarios sur la dette publique.")
 
-# Pour cet exemple, nous réutilisons les données de dette publique
 @st.cache_data
 def load_debt_data():
     filepath = os.path.join("data", "debt_data.csv")
@@ -31,9 +30,8 @@ if not data.empty:
         annee_courante = data["année"].iloc[-1]
         annees_diff = annee_simulation - annee_courante
         simulation = derniere_valeur * ((1 + taux_croissance/100) ** annees_diff)
-        st.write(f"Valeur projetée de la dette publique en {annee_simulation} : {simulation:,.2f}")
+        st.write(f"Valeur projetée de la dette publique en {annee_simulation} : {simulation:,.2f} millions de DH")
     except Exception as e:
         st.error(f"Erreur dans la simulation : {e}")
 else:
     st.error("Les données nécessaires pour la simulation ne sont pas disponibles.")
- 
