@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 
 st.title("Analyse Avancée et Outils Statistiques")
-st.markdown("Utilisez les outils ci-dessous pour explorer les relations entre différents indicateurs.")
+st.markdown("Explorez les relations entre différents indicateurs économiques grâce aux outils d'analyse.")
 
 @st.cache_data
 def load_macro_data():
@@ -40,4 +40,3 @@ if not macro_data.empty:
         st.error("Les colonnes nécessaires pour la régression ne sont pas présentes.")
 else:
     st.info("Aucune donnée macroéconomique disponible pour l'analyse avancée.")
- 
