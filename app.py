@@ -1,60 +1,53 @@
 import streamlit as st
-import random
+import pandas as pd
+import plotly.express as px
 
-st.set_page_config(page_title="Plateforme Économie & Finance", layout="wide")
+st.set_page_config(page_title="Platforma Eqtisad & Malia", layout="wide")
 
-# Moroccan Arabic marketing phrases (more options)
-welcome_phrases = [
-    "Marhaba! Bienvenue sur notre plateforme interactive d'apprentissage de l'économie et de la finance.",
-    "Découvrez les secrets de l'économie et de la finance avec nous!",
-    "Plongez dans le monde des chiffres et des stratégies financières.",
-    "Iqra, Fhem, Wastaqbel l'avenir! (Read, Understand, and Embrace the future!)",  # More motivational
-    "Maâa-na, ghadi tqraw kolchi li kayn f'l'économie! (With us, you'll learn everything about economics!)"  # More colloquial
-]
+# Moroccan Arabic marketing phrases (transliterated)
+welcome_phrases = ["Marhaba! Bienvenue sur platforma interactive dyalna l'qraya l'eqtisad w l'maliya.",
+                   "Dektachif les secrets d'l'eqtisad w l'maliya m3ana!",
+                   "Tplonji f'3alam l'arqam w l'istratijiyat l'maliya."]
 
-# Navigation (with descriptions in Moroccan Arabic)
+# Sample data (replace with your actual data)
+data = pd.DataFrame({
+    "Secteur": ["Fellaha", "Sina3a", "Khadamat", " السياحة (Siyaha)"],  # Example with one Arabic word
+    "Contribution (%)": [15, 25, 50, 10]
+})
+
+# Title and welcome message
+st.title("Platforma Interactive d’Apprentissage d'l'Eqtisad w l'Maliya")
+st.write(welcome_phrases[0])  # Display a random welcome phrase
+
+# Navigation
 pages = {
-    "Dashboard": {"title_ar": "لوحة التحكم", "description_ar": "نظرة عامة على المؤشرات الرئيسية"},
-    "Macro Indicateurs": {"title_ar": "المؤشرات الاقتصادية الكلية", "description_ar": "تحليل المؤشرات الاقتصادية الكلية"},
-    "Sector Indicateurs": {"title_ar": "مؤشرات القطاع", "description_ar": "تصور مؤشرات حسب القطاع"},
-    "Finances Publiques": {"title_ar": "المالية العامة", "description_ar": "تحليل الميزانيات والنفقات العامة"},
-    "Simulation Avancée": {"title_ar": "محاكاة متقدمة", "description_ar": "سيناريوهات اقتصادية تفاعلية"},
-    "Tutoriels": {"title_ar": "دروس تعليمية", "description_ar": "موارد تعليمية ودروس"},
-    "Analyse": {"title_ar": "تحليل", "description_ar": "أدوات تحليل متقدمة (الارتباط ، الانحدار)"},
-    "Quiz": {"title_ar": "اختبار", "description_ar": "اختبر معلوماتك من خلال اختبار تفاعلي"}
+    "Dashboard": " نظرة عامة (Nadra 3ama) w mo2ashshirat mafatih",
+    "Macro Indicateurs": "تحليل المؤشرات الماكرو اقتصادية (Tahlil l'mo2ashshirat l'macro-eqtisadiya)",
+    "Sector Indicateurs": "تصور مؤشرات القطاع (Tasawur mo2ashshirat l'qita3)",
+    "Finances Publiques": "تحليل الميزانيات والنفقات العامة (Tahlil l'mizaniyat w nafaqaat l'3ama)",
+    "Simulation Avancée": "سيناريوهات اقتصادية تفاعلية (Sinariyohat iqtisadiya tafa3uliya)",
+    "Tutoriels": "موارد تعليمية ودروس (Mawarid ta3limiya w dorous)",
+    "Analyse": "أدوات تحليل متقدمة (ارتباط ، انحدار) (Adawat tahlil mutaqadima (irtibat, inhidar))",
+    "Quiz": "اختبر معلوماتك من خلال اختبار تفاعلي (Ikhtabar ma3lumatik min khilal ikhtibar tafa3uli)"
 }
 
-# Title and welcome message (randomized)
-st.title("Plateforme Interactive d’Apprentissage de l’Économie et de la Finance")
-st.write(random.choice(welcome_phrases))
-
-# Navigation in the sidebar
-selection = st.sidebar.radio("تصفح", list(pages.keys()))  # Right-to-left for Arabic
+selection = st.sidebar.radio("Navigation", list(pages.keys()))
 
 # Content based on selection
-selected_page = pages[selection]
-st.header(selected_page["title_ar"])  # Arabic title
-
-# Add content for each section (placeholders)
 if selection == "Dashboard":
-    st.write(selected_page["description_ar"])  # Arabic description
-    st.write("Bienvenue au tableau de bord. Ici, vous trouverez un aperçu des indicateurs clés.")
-    # Add your dashboard content here
+    st.header("Tableau de Bord / Nadra 3ama")
+    st.write("Hna aperçu d'l'mo2ashshirat l'mafatih :")
+
+    # Sample chart
+    fig = px.pie(data, values="Contribution (%)", names="Secteur", title="مساهمة القطاعات في الاقتصاد (Musahema l'qita3at fi l'eqtisad)")
+    st.plotly_chart(fig)
+
 elif selection == "Macro Indicateurs":
-    st.write(selected_page["description_ar"])
-    st.write("Section dédiée à l'analyse des indices macroéconomiques.")
-    # Add your Macro Indicateurs content here
+    st.header("Macro Indicateurs /  المؤشرات الماكرو اقتصادية (L'mo2ashshirat l'macro-eqtisadiya)")
+    # Add content for Macro Indicateurs
+
 elif selection == "Sector Indicateurs":
-    st.write(selected_page["description_ar"])
-    st.write("Visualisation des indicateurs par secteur.")
-    # Add your Sector Indicateurs content here
-# ... (Add content for other sections)
+    st.header("Sector Indicateurs / مؤشرات القطاع (Mo2ashshirat l'qita3)")
+    # Add content for Sector Indicateurs
 
-# Example of dynamic content (you can expand this)
-st.subheader("Contenu Dynamique")
-if st.checkbox("Afficher des informations supplémentaires"):
-    st.write("Voici des informations supplémentaires qui s'affichent dynamiquement.")
-
-# Footer (optional)
-st.markdown("---")
-st.write("© 2024 Votre Organisation")  # Replace with your organization
+# Add content for other sections...
