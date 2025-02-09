@@ -5,7 +5,7 @@ st.set_page_config(page_title="Plateforme Économie & Finance", layout="wide")
 
 st.title("Plateforme Interactive d’Apprentissage de l’Économie et de la Finance")
 st.markdown("""
-Bienvenue sur cette plateforme interactive !  
+Marhba bik f had la plateforme interactive !  
 Utilisez le menu latéral ou les onglets en haut pour naviguer entre les différentes sections :
 - **Dashboard** : Vue d'ensemble et indicateurs clés.
 - **Macro Indicateurs** : Analyse des indices macroéconomiques.
