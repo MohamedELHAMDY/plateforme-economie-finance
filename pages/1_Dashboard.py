@@ -29,8 +29,8 @@ if not debt_data.empty:
                   title="Évolution de la Dette Publique au Maroc")
     st.plotly_chart(fig)
     
-    # Intégration d'une image (par exemple, un graphique illustratif ou le drapeau)
+    # Updated image display with use_container_width
     image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Flag_of_Morocco.svg/1200px-Flag_of_Morocco.svg.png"
-    st.image(image_url, caption="Drapeau du Maroc", use_column_width=True)
+    st.image(image_url, caption="Drapeau du Maroc", use_container_width=True)
 else:
     st.error("Les données de dette publique ne sont pas disponibles.")
