@@ -17,14 +17,17 @@ def load_budget_data():
         df = pd.read_csv(filepath, encoding="utf-8", sep=",")
         st.write("Colonnes disponibles :", df.columns)  # Debugging step
         budget_col = [col for col in df.columns if "budget" in col.lower()]
-        if budget_col:
-            col_name = budget_col[0]
-            if df[col_name].dtype == 'object':
-                df[col_name] = df[col_name].str.replace(",", "", regex=True)
-            df["budget"] = pd.to_numeric(df[col_name], errors="coerce")
+        secteur_col = [col for col in df.columns if "secteur" in col.lower()]
+        if budget_col and secteur_col:
+            budget_col_name = budget_col[0]
+            secteur_col_name = secteur_col[0]
+            if df[budget_col_name].dtype == 'object':
+                df[budget_col_name] = df[budget_col_name].str.replace(",", "", regex=True)
+            df["budget"] = pd.to_numeric(df[budget_col_name], errors="coerce")
+            df.rename(columns={secteur_col_name: "secteur"}, inplace=True)
             return df
         else:
-            st.error("La colonne contenant les données budgétaires est introuvable.")
+            st.error("Les colonnes nécessaires (budget et secteur) sont introuvables.")
             return pd.DataFrame()
     else:
         st.error("Le fichier des données budgétaires est manquant.")
@@ -35,8 +38,11 @@ budget_data = load_budget_data()
 if not budget_data.empty:
     st.subheader("Budget par Secteur (en millions de DH)")
     st.dataframe(budget_data.head())
-    fig = px.bar(budget_data, x="secteur", y="budget", title="Répartition du Budget par Secteur")
-    st.plotly_chart(fig)
+    if "secteur" in budget_data.columns and "budget" in budget_data.columns:
+        fig = px.bar(budget_data, x="secteur", y="budget", title="Répartition du Budget par Secteur")
+        st.plotly_chart(fig)
+    else:
+        st.error("Les données nécessaires pour le graphique sont absentes.")
 else:
     st.error("Les données budgétaires ne sont pas disponibles.")
 
