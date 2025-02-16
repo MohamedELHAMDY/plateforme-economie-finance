@@ -53,3 +53,39 @@ if sectors:
         st.bar_chart(votes_df.set_index("secteur"))
 else:
     st.error("Impossible de charger les secteurs budgétaires.")
+
+# Ajouter des questions génériques
+st.subheader("🗣️ Questions Génériques")
+
+# Question 1: Satisfaction with the current budget allocation
+satisfaction = st.selectbox("Comment vous sentez-vous à propos de l'allocation actuelle du budget national parmi les différents secteurs ?", 
+                            ["Très satisfait", "Satisfait", "Neutre", "Insatisfait", "Très insatisfait"])
+
+# Question 2: Sector funding prioritization
+priority_sector = st.multiselect("Parmi les secteurs suivants, lequel(s) devraient recevoir plus de financement l'année prochaine ?", 
+                                 ["Éducation", "Santé", "Infrastructure", "Environnement", "Sécurité", "Autre (veuillez spécifier)"])
+
+# Question 3: Social vs Economic Growth Programs
+social_vs_growth = st.radio("Pensez-vous que le gouvernement devrait privilégier les programmes sociaux par rapport aux initiatives de croissance économique ?", 
+                            ["Oui", "Non", "Je ne sais pas"])
+
+# Question 4: Future participation in surveys
+future_participation = st.radio("Seriez-vous prêt à participer à des enquêtes futures concernant les dépenses publiques et le budget ?", 
+                                ["Oui", "Non", "Peut-être"])
+
+# Question 5: Transparency in fund management
+transparency = st.selectbox("Pensez-vous qu'il y ait suffisamment de transparence dans la gestion des fonds publics ?", 
+                            ["Oui, complètement transparent", "Non, mais certaines informations sont disponibles", "Non, il y a un manque de transparence", "Je ne sais pas"])
+
+# Question 6: Area for improvement in public spending
+improvement_suggestion = st.text_area("Si vous pouviez suggérer une amélioration dans les dépenses publiques, quelle serait-elle ?", "")
+
+# Display submitted answers
+if st.button("✅ Soumettre vos réponses"):
+    st.write("Merci pour vos réponses ! Voici ce que vous avez soumis :")
+    st.write(f"Satisfaction avec l'allocation du budget: {satisfaction}")
+    st.write(f"Secteurs prioritaires pour plus de financement: {', '.join(priority_sector)}")
+    st.write(f"Préférence pour programmes sociaux ou croissance économique: {social_vs_growth}")
+    st.write(f"Participation future dans les enquêtes: {future_participation}")
+    st.write(f"Transparence dans la gestion des fonds publics: {transparency}")
+    st.write(f"Amélioration suggérée dans les dépenses publiques: {improvement_suggestion}")
