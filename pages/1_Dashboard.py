@@ -15,9 +15,16 @@ def load_budget_data():
     filepath = os.path.join("data", "finances_data.csv")
     if os.path.exists(filepath):
         df = pd.read_csv(filepath, encoding="utf-8", sep=",")
-        df["budget"] = pd.to_numeric(df["budget"].str.replace(",", "", regex=True), errors="coerce")
-        return df
+        st.write("Colonnes disponibles :", df.columns)  # Debugging step
+        budget_col = [col for col in df.columns if "budget" in col.lower()]
+        if budget_col:
+            df["budget"] = pd.to_numeric(df[budget_col[0]].str.replace(",", "", regex=True), errors="coerce")
+            return df
+        else:
+            st.error("La colonne contenant les données budgétaires est introuvable.")
+            return pd.DataFrame()
     else:
+        st.error("Le fichier des données budgétaires est manquant.")
         return pd.DataFrame()
 
 budget_data = load_budget_data()
