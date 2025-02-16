@@ -18,7 +18,10 @@ def load_budget_data():
         st.write("Colonnes disponibles :", df.columns)  # Debugging step
         budget_col = [col for col in df.columns if "budget" in col.lower()]
         if budget_col:
-            df["budget"] = pd.to_numeric(df[budget_col[0]].str.replace(",", "", regex=True), errors="coerce")
+            col_name = budget_col[0]
+            if df[col_name].dtype == 'object':
+                df[col_name] = df[col_name].str.replace(",", "", regex=True)
+            df["budget"] = pd.to_numeric(df[col_name], errors="coerce")
             return df
         else:
             st.error("La colonne contenant les données budgétaires est introuvable.")
